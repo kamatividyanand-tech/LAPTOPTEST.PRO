@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaptopTest Pro — by Vidyanand</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --border: #1e1e2e;
+    --accent: #00f5c4;
+    --accent2: #ff3e6c;
+    --accent3: #7c3aed;
+    --text: #e0e0f0;
+    --muted: #555570;
+    --card: #0f0f1a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,245,196,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,245,196,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .logo span { color: var(--accent2); }
+
+  .dev-badge {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  .dev-badge strong { color: var(--accent); }
+
+  /* MAIN */
+  main {
+    padding-top: 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .hero h1 .hl { color: var(--accent); }
+  .hero h1 .hl2 { color: var(--accent2); }
+
+  .hero p {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 500px;
+    margin-inline: auto;
+  }
+
+  /* NAV PILLS */
+  .nav-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    padding: 1.5rem 2rem;
+  }
+
+  .pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1.2rem;
+    border-radius: 50px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  .pill:hover, .pill.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  /* SECTIONS */
+  .section {
+    display: none;
+    padding: 1.5rem 2rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--accent);
+  }
+
+  .section-title .icon {
+    width: 32px; height: 32px;
+    background: rgba(0,245,196,0.1);
+    border: 1px solid rgba(0,245,196,0.3);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+
+  /* ===================== DISPLAY TEST ===================== */
+  .color-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .color-btn {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .color-btn:hover { transform: scale(1.04); border-color: white; }
+
+  .color-btn .label {
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+  }
+
+  /* FULLSCREEN OVERLAY */
+  #fullscreen-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #fullscreen-overlay.active { display: flex; }
+
+  #fullscreen-overlay .exit-hint {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* Dead Pixel Pattern */
+  .dead-pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .dp-btn {
+    padding: 0.7rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .dp-btn:hover { border-color: var(--accent); }
+
+  /* Gradient test */
+  .gradient-row {
+    height: 60px;
+    border-radius: 10px;
+    margin-bottom: 0.7rem;
+  }
+
+  /* ===================== KEYBOARD TEST ===================== */
+  .keyboard-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    user-select: none;
+  }
+
+  .kb-info {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.2rem;
+  }
+
+  .kb-stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .kb-stat span { color: var(--accent); font-weight: 700; }
+
+  .keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .kb-row {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+  }
+
+  .key {
+    background: #1a1a2e;
+    border: 1px solid #2a2a3e;
+    border-bottom: 3px solid #111;
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.6rem;
+    min-width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 4px;
+    cursor: pointer;
+    transition: all 0.1s;
+    line-height: 1.2;
+    position: relative;
+  }
+
+  .key.wide2 { min-width: 60px; }
+  .key.wide3 { min-width: 80px; }
+  .key.wide4 { min-width: 90px; }
+  .key.wide5 { min-width: 110px; }
+  .key.spacebar { min-width: 280px; }
+  .key.enter { min-width: 75px; height: 36px; }
+
+  .key:hover { background: #222240; border-color: #444; }
+
+  .key.pressed {
+    background: var(--accent) !important;
+    color: #000 !important;
+    border-color: var(--accent) !important;
+    transform: scale(0.95) translateY(1px);
+  }
+
+  .key.tested {
+    background: rgba(0,245,196,0.15);
+    border-color: rgba(0,245,196,0.4);
+    color: var(--accent);
+  }
+
+  .last-key-display {
+    margin-top: 1rem;
+    padding: 0.8rem 1.2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .last-key-display .lk-label { color: var(--muted); }
+  .last-key-display .lk-key { color: var(--accent); font-weight: 700; font-size: 1rem; }
+  .last-key-display .lk-code { color: var(--accent3); }
+
+  .kb-actions {
+    display: flex;
+    gap: 0.7rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  /* ===================== TOUCHPAD TEST ===================== */
+  .touchpad-area {
+    background: linear-gradient(135deg, #0f0f20, #161628);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    height: 320px;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .touchpad-area.active-touch {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,245,196,0.15);
+  }
+
+  .touch-dot {
+    position: absolute;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    transition: opacity 0.3s;
+    box-shadow: 0 0 12px var(--accent);
+  }
+
+  .touch-trail {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    opacity: 0.3;
+  }
+
+  .tp-hint {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    pointer-events: none;
+  }
+
+  .tp-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.7rem;
+    margin-top: 1rem;
+  }
+
+  .tp-stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.8rem;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .tp-stat .val { font-size: 1.4rem; color: var(--accent); font-weight: 700; }
+  .tp-stat .lbl { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+
+  /* ===================== TOUCH SCREEN ===================== */
+  .touch-screen-area {
+    background: linear-gradient(135deg, #0f1020, #1a0f20);
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .multi-touch-dot {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--accent2);
+    background: rgba(255,62,108,0.2);
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent2);
+    animation: touchPulse 0.4s ease;
+  }
+
+  @keyframes touchPulse {
+    from { transform: translate(-50%,-50%) scale(0.5); opacity: 0; }
+    to { transform: translate(-50%,-50%) scale(1); opacity: 1; }
+  }
+
+  /* ===================== SYSTEM INFO ===================== */
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .info-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+  }
+
+  .info-card h3 {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.82rem;
+    gap: 1rem;
+  }
+
+  .info-row:last-child { border-bottom: none; }
+  .info-row .key-name { color: var(--muted); font-family: 'Space Mono', monospace; flex-shrink: 0; }
+  .info-row .val-name { color: var(--text); text-align: right; word-break: break-all; }
+
+  /* ===================== AUDIO TEST ===================== */
+  .audio-controls {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .audio-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+
+  .audio-card h3 { font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem; }
+
+  .vol-slider {
+    width: 100%;
+    accent-color: var(--accent);
+    margin: 0.5rem 0;
+  }
+
+  /* ===================== BATTERY ===================== */
+  .battery-display {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .battery-icon {
+    position: relative;
+    width: 100px; height: 50px;
+    border: 3px solid var(--text);
+    border-radius: 8px;
+    flex-shrink: 0;
+  }
+
+  .battery-icon::after {
+    content: '';
+    position: absolute;
+    right: -10px; top: 50%;
+    transform: translateY(-50%);
+    width: 8px; height: 20px;
+    background: var(--text);
+    border-radius: 0 4px 4px 0;
+  }
+
+  .battery-fill {
+    position: absolute;
+    left: 3px; top: 3px; bottom: 3px;
+    border-radius: 4px;
+    background: var(--accent);
+    transition: width 0.5s ease;
+  }
+
+  .battery-info { flex: 1; }
+  .battery-pct { font-size: 2.5rem; font-weight: 800; color: var(--accent); }
+  .battery-detail { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--muted); margin-top: 0.5rem; }
+
+  /* ===================== CAMERA MIC ===================== */
+  .camera-wrap {
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+    max-height: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #camera-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1);
+  }
+
+  .cam-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: 'Space Mono', monospace;
+    text-align: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  /* ===================== BUTTONS ===================== */
+  .btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    cursor: pointer;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .btn:hover { background: #00d4aa; transform: translateY(-1px); }
+
+  .btn-danger {
+    background: var(--accent2);
+    color: white;
+  }
+
+  .btn-danger:hover { background: #e02555; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+
+  /* ===================== ROADMAP ===================== */
+  .roadmap {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .roadmap::before {
+    content: '';
+    position: absolute;
+    left: 10px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent3));
+  }
+
+  .rm-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .rm-item::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .rm-item h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    color: var(--text);
+  }
+
+  .rm-item .rm-phase {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    background: rgba(0,245,196,0.1);
+    border: 1px solid rgba(0,245,196,0.2);
+    padding: 2px 8px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+  }
+
+  .rm-item p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  .rm-item ul { margin-top: 0.5rem; padding-left: 1.2rem; }
+  .rm-item ul li { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.2rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    position: relative;
+    z-index: 1;
+  }
+
+  footer strong { color: var(--accent); }
+
+  /* STATUS DOT */
+  .status-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+    margin-right: 6px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,245,196,0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(0,245,196,0); }
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid;
+    margin-left: 6px;
+  }
+
+  .tag-green { color: var(--accent); border-color: rgba(0,245,196,0.3); background: rgba(0,245,196,0.08); }
+  .tag-red { color: var(--accent2); border-color: rgba(255,62,108,0.3); background: rgba(255,62,108,0.08); }
+  .tag-purple { color: #a78bfa; border-color: rgba(167,139,250,0.3); background: rgba(167,139,250,0.08); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .key { min-width: 26px; height: 28px; font-size: 0.5rem; }
+    .key.wide2 { min-width: 44px; }
+    .key.wide3 { min-width: 56px; }
+    .key.wide4 { min-width: 68px; }
+    .key.spacebar { min-width: 180px; }
+    .tp-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FULLSCREEN DISPLAY OVERLAY -->
+<div id="fullscreen-overlay">
+  <div id="fs-color-name" style="position:fixed;top:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:white;padding:6px 20px;border-radius:20px;font-family:'Space Mono',monospace;font-size:0.85rem;pointer-events:none;"></div>
+  <div id="fs-controls" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:10000;opacity:0;transition:opacity 0.3s ease;pointer-events:none;">
+    <button onclick="event.stopPropagation();changeColor(-1)" style="background:rgba(0,0,0,0.7);color:white;border:1px solid rgba(255,255,255,0.3);padding:8px 20px;border-radius:20px;font-family:'Space Mono',monospace;font-size:0.8rem;cursor:pointer;">◀ PREV</button>
+    <button onclick="event.stopPropagation();exitFullscreen()" style="background:rgba(255,62,108,0.8);color:white;border:none;padding:8px 20px;border-radius:20px;font-family:'Space Mono',monospace;font-size:0.8rem;cursor:pointer;">✕ EXIT</button>
+    <button onclick="event.stopPropagation();changeColor(1)" style="background:rgba(0,0,0,0.7);color:white;border:1px solid rgba(255,255,255,0.3);padding:8px 20px;border-radius:20px;font-family:'Space Mono',monospace;font-size:0.8rem;cursor:pointer;">NEXT ▶</button>
+  </div>
+  <div style="position:fixed;top:20px;right:20px;background:rgba(0,0,0,0.5);color:rgba(255,255,255,0.6);padding:5px 14px;border-radius:20px;font-size:0.7rem;font-family:'Space Mono',monospace;pointer-events:none;" id="fs-counter"></div>
+</div>
+
+<header>
+  <div class="logo">LAPTOP<span>TEST</span>.PRO</div>
+  <div class="dev-badge">Developed by <strong>Vidyanand</strong></div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>Complete <span class="hl">Hardware</span><br>Test <span class="hl2">Suite</span></h1>
+    <p>Test your display, keyboard, touchpad, touch screen, audio, camera, battery and more — all in one place.</p>
+  </div>
+
+  <div class="nav-pills">
+    <button class="pill active" onclick="showSection('display')">🖥 Display</button>
+    <button class="pill" onclick="showSection('keyboard')">⌨️ Keyboard</button>
+    <button class="pill" onclick="showSection('touchpad')">🖱 Touchpad</button>
+    <button class="pill" onclick="showSection('touchscreen')">👆 Touch Screen</button>
+    <button class="pill" onclick="showSection('audio')">🔊 Audio</button>
+    <button class="pill" onclick="showSection('battery')">🔋 Battery</button>
+    <button class="pill" onclick="showSection('camera')">📷 Camera/Mic</button>
+    <button class="pill" onclick="showSection('sysinfo')">💻 System Info</button>
+    <button class="pill" onclick="showSection('roadmap')">🗺 Roadmap</button>
+  </div>
+
+  <!-- ======================== DISPLAY ======================== -->
+  <div id="section-display" class="section active">
+    <div class="section-title"><div class="icon">🖥</div>Display Test</div>
+
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.2rem;">Click any color below to go fullscreen. Scan for dead pixels, color uniformity, and backlight bleeding.</p>
+
+    <div class="color-grid">
+      <div class="color-btn" style="background:#ff0000;" onclick="fullscreenColor('#ff0000','RED')"><div class="label">RED</div></div>
+      <div class="color-btn" style="background:#00ff00;" onclick="fullscreenColor('#00ff00','GREEN')"><div class="label" style="color:#000">GREEN</div></div>
+      <div class="color-btn" style="background:#0000ff;" onclick="fullscreenColor('#0000ff','BLUE')"><div class="label">BLUE</div></div>
+      <div class="color-btn" style="background:#ffffff;" onclick="fullscreenColor('#ffffff','WHITE')"><div class="label" style="color:#000">WHITE</div></div>
+      <div class="color-btn" style="background:#000000;border:1px solid #333;" onclick="fullscreenColor('#000000','BLACK')"><div class="label">BLACK</div></div>
+      <div class="color-btn" style="background:#ffff00;" onclick="fullscreenColor('#ffff00','YELLOW')"><div class="label" style="color:#000">YELLOW</div></div>
+      <div class="color-btn" style="background:#ff00ff;" onclick="fullscreenColor('#ff00ff','MAGENTA')"><div class="label">MAGENTA</div></div>
+      <div class="color-btn" style="background:#00ffff;" onclick="fullscreenColor('#00ffff','CYAN')"><div class="label" style="color:#000">CYAN</div></div>
+      <div class="color-btn" style="background:#808080;" onclick="fullscreenColor('#808080','GRAY')"><div class="label">GRAY</div></div>
+      <div class="color-btn" style="background:#ff8800;" onclick="fullscreenColor('#ff8800','ORANGE')"><div class="label" style="color:#000">ORANGE</div></div>
+    </div>
+
+    <div class="section-title" style="font-size:1rem;margin-top:1.5rem;"><div class="icon" style="font-size:0.8rem">🌈</div>Gradient Test</div>
+    <div class="gradient-row" style="background:linear-gradient(to right, #000, #fff)"></div>
+    <div class="gradient-row" style="background:linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00)"></div>
+    <div class="gradient-row" style="background:linear-gradient(to right, #000, #f00, #fff)"></div>
+
+    <div class="section-title" style="font-size:1rem;margin-top:1.5rem;"><div class="icon" style="font-size:0.8rem">⬛</div>Dead Pixel Patterns</div>
+    <div class="dead-pixel-grid">
+      <div class="dp-btn" style="background:#fff;color:#000;font-weight:700;" onclick="fullscreenPattern('checkerboard')">Checkerboard</div>
+      <div class="dp-btn" style="background:#000;color:#fff;" onclick="fullscreenPattern('dots')">Dot Grid</div>
+      <div class="dp-btn" style="background:#0f0;color:#000;" onclick="fullscreenPattern('vlines')">V-Lines</div>
+      <div class="dp-btn" style="background:#f00;color:#fff;" onclick="fullscreenPattern('hlines')">H-Lines</div>
+      <div class="dp-btn" style="background:linear-gradient(45deg,#000 25%,#fff 25%,#fff 50%,#000 50%,#000 75%,#fff 75%);color:transparent;" onclick="fullscreenPattern('checker2')">Fine Check</div>
+    </div>
+  </div>
+
+  <!-- ======================== KEYBOARD ======================== -->
+  <div id="section-keyboard" class="section">
+    <div class="section-title"><div class="icon">⌨️</div>Keyboard Test</div>
+
+    <div class="keyboard-wrap">
+      <div class="kb-info">
+        <div class="kb-stat">Tested: <span id="kb-tested-count">0</span> / <span id="kb-total-count">0</span> keys</div>
+        <div class="kb-stat">Presses: <span id="kb-press-count">0</span></div>
+        <div class="kb-stat" id="kb-all-badge" style="display:none;color:var(--accent);">✅ All Keys Tested!</div>
+      </div>
+
+      <div class="keyboard" id="keyboard-layout"></div>
+
+      <div class="last-key-display" id="last-key-display">
+        <span class="lk-label">Press any key...</span>
+      </div>
+
+      <div class="kb-actions">
+        <button class="btn btn-outline" onclick="resetKeyboard()">Reset</button>
+        <button class="btn btn-outline" onclick="typeTestFocus()">Type Test Area ↓</button>
+      </div>
+    </div>
+
+    <div style="margin-top:1rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem;">
+      <div style="font-size:0.8rem;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:0.5rem;">TYPE TEST — Click here and type:</div>
+      <textarea id="type-test" style="width:100%;height:100px;background:#0a0a14;border:1px solid var(--border);border-radius:8px;padding:0.8rem;color:var(--text);font-family:'Space Mono',monospace;font-size:0.85rem;resize:none;outline:none;" placeholder="Start typing here to test your keyboard..."></textarea>
+    </div>
+  </div>
+
+  <!-- ======================== TOUCHPAD ======================== -->
+  <div id="section-touchpad" class="section">
+    <div class="section-title"><div class="icon">🖱</div>Touchpad Test</div>
+
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Move your mouse or touchpad inside the area below. Test all click types and gestures.</p>
+
+    <div class="touchpad-area" id="touchpad-area">
+      <div class="tp-hint" id="tp-hint">
+        <div style="font-size:1.5rem;margin-bottom:0.5rem;">🖱</div>
+        <div>Move your cursor here</div>
+        <div style="font-size:0.75rem;margin-top:4px;color:var(--muted)">Click, right-click, scroll inside</div>
+      </div>
+    </div>
+
+    <div class="tp-stats">
+      <div class="tp-stat"><div class="val" id="tp-moves">0</div><div class="lbl">MOVEMENTS</div></div>
+      <div class="tp-stat"><div class="val" id="tp-clicks">0</div><div class="lbl">CLICKS</div></div>
+      <div class="tp-stat"><div class="val" id="tp-scroll">0</div><div class="lbl">SCROLL EVENTS</div></div>
+    </div>
+
+    <div style="margin-top:1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:0.7rem;">
+      <div class="info-card" style="text-align:center;">
+        <div style="font-size:0.7rem;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:0.5rem;">LEFT CLICK</div>
+        <div id="btn-left" style="font-size:1.5rem;">⭕</div>
+        <div id="btn-left-count" style="font-size:0.75rem;color:var(--muted);font-family:'Space Mono',monospace;">0 times</div>
+      </div>
+      <div class="info-card" style="text-align:center;">
+        <div style="font-size:0.7rem;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:0.5rem;">RIGHT CLICK</div>
+        <div id="btn-right" style="font-size:1.5rem;">⭕</div>
+        <div id="btn-right-count" style="font-size:0.75rem;color:var(--muted);font-family:'Space Mono',monospace;">0 times</div>
+      </div>
+      <div class="info-card" style="text-align:center;">
+        <div style="font-size:0.7rem;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:0.5rem;">MIDDLE CLICK</div>
+        <div id="btn-middle" style="font-size:1.5rem;">⭕</div>
+        <div id="btn-middle-count" style="font-size:0.75rem;color:var(--muted);font-family:'Space Mono',monospace;">0 times</div>
+      </div>
+    </div>
+
+    <button class="btn btn-outline" style="margin-top:1rem;" onclick="resetTouchpad()">Reset Stats</button>
+  </div>
+
+  <!-- ======================== TOUCH SCREEN ======================== -->
+  <div id="section-touchscreen" class="section">
+    <div class="section-title"><div class="icon">👆</div>Touch Screen Test</div>
+
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1rem;">Touch the screen with multiple fingers. Test multi-touch, swipe, pinch.</p>
+
+    <div class="touch-screen-area" id="touch-area">
+      <div id="ts-hint" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:var(--muted);pointer-events:none;">
+        <div style="font-size:2rem;margin-bottom:0.5rem;">👆</div>
+        <div style="font-size:0.85rem;">Touch here to test</div>
+        <div style="font-size:0.75rem;margin-top:4px;">Supports multi-touch</div>
+      </div>
+    </div>
+
+    <div class="tp-stats" style="margin-top:1rem;">
+      <div class="tp-stat"><div class="val" id="ts-touches">0</div><div class="lbl">TOTAL TOUCHES</div></div>
+      <div class="tp-stat"><div class="val" id="ts-max-fingers">0</div><div class="lbl">MAX FINGERS</div></div>
+      <div class="tp-stat"><div class="val" id="ts-supported">—</div><div class="lbl">TOUCH SUPPORT</div></div>
+    </div>
+
+    <div style="margin-top:1rem;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;">
+      <div style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;">TOUCH LOG</div>
+      <div id="ts-log" style="font-family:'Space Mono',monospace;font-size:0.75rem;color:var(--text);max-height:120px;overflow-y:auto;"></div>
+    </div>
+
+    <button class="btn btn-outline" style="margin-top:1rem;" onclick="resetTouchScreen()">Clear</button>
+  </div>
+
+  <!-- ======================== AUDIO ======================== -->
+  <div id="section-audio" class="section">
+    <div class="section-title"><div class="icon">🔊</div>Audio Test</div>
+
+    <div class="audio-controls">
+      <div class="audio-card">
+        <h3>LEFT SPEAKER</h3>
+        <button class="btn" onclick="playTone('left', 440)">▶ Play Left</button>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">440 Hz tone on left channel</div>
+      </div>
+      <div class="audio-card">
+        <h3>RIGHT SPEAKER</h3>
+        <button class="btn" onclick="playTone('right', 440)">▶ Play Right</button>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">440 Hz tone on right channel</div>
+      </div>
+      <div class="audio-card">
+        <h3>BOTH SPEAKERS</h3>
+        <button class="btn" onclick="playTone('both', 440)">▶ Play Both</button>
+        <div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">Stereo test</div>
+      </div>
+      <div class="audio-card">
+        <h3>FREQUENCY TEST</h3>
+        <input type="range" class="vol-slider" id="freq-slider" min="20" max="20000" value="440" oninput="updateFreq(this.value)">
+        <div style="font-size:0.8rem;color:var(--accent);font-family:'Space Mono',monospace;" id="freq-display">440 Hz</div>
+        <button class="btn btn-outline" style="margin-top:0.5rem;" onclick="playTone('both', parseInt(document.getElementById('freq-slider').value))">▶ Play</button>
+      </div>
+      <div class="audio-card">
+        <h3>VOLUME TEST</h3>
+        <input type="range" class="vol-slider" id="vol-slider" min="0" max="100" value="50" oninput="updateVol(this.value)">
+        <div style="font-size:0.8rem;color:var(--accent);font-family:'Space Mono',monospace;" id="vol-display">50%</div>
+      </div>
+      <div class="audio-card">
+        <h3>MIC TEST</h3>
+        <button class="btn btn-outline" onclick="startMic()">🎙 Start Mic</button>
+        <div style="margin-top:0.8rem;height:8px;background:var(--border);border-radius:4px;overflow:hidden;">
+          <div id="mic-bar" style="height:100%;width:0%;background:var(--accent);transition:width 0.1s;"></div>
+        </div>
+        <div style="font-size:0.7rem;color:var(--muted);margin-top:0.4rem;">Mic level indicator</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== BATTERY ======================== -->
+  <div id="section-battery" class="section">
+    <div class="section-title"><div class="icon">🔋</div>Battery Test</div>
+
+    <div class="battery-display">
+      <div class="battery-icon">
+        <div class="battery-fill" id="battery-fill" style="width:0%"></div>
+      </div>
+      <div class="battery-info">
+        <div class="battery-pct" id="battery-pct">--</div>
+        <div class="battery-detail" id="battery-detail">Fetching battery info...</div>
+      </div>
+    </div>
+
+    <div class="info-grid" style="grid-template-columns:1fr;">
+      <div class="info-card">
+        <h3>⚡ Battery Details</h3>
+        <div class="info-row"><span class="key-name">Level</span><span class="val-name" id="bat-level">—</span></div>
+        <div class="info-row"><span class="key-name">Status</span><span class="val-name" id="bat-status">—</span></div>
+        <div class="info-row"><span class="key-name">Charging</span><span class="val-name" id="bat-charging">—</span></div>
+        <div class="info-row"><span class="key-name">Discharge Time</span><span class="val-name" id="bat-discharge">—</span></div>
+        <div class="info-row"><span class="key-name">Charge Time</span><span class="val-name" id="bat-chargetime">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================== CAMERA ======================== -->
+  <div id="section-camera" class="section">
+    <div class="section-title"><div class="icon">📷</div>Camera & Microphone</div>
+
+    <div class="camera-wrap">
+      <video id="camera-feed" autoplay playsinline muted></video>
+      <div class="cam-overlay" id="cam-overlay">
+        <div style="font-size:2rem">📷</div>
+        <div>Click button to start camera</div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.7rem;flex-wrap:wrap;margin-top:1rem;">
+      <button class="btn" onclick="startCamera()">📷 Start Camera</button>
+      <button class="btn btn-danger" onclick="stopCamera()">⛔ Stop Camera</button>
+    </div>
+
+    <div style="margin-top:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem;">
+      <div class="info-row"><span class="key-name">Camera Status</span><span class="val-name" id="cam-status">Not Started</span></div>
+      <div class="info-row"><span class="key-name">Device Count</span><span class="val-name" id="cam-devices">—</span></div>
+      <div class="info-row"><span class="key-name">Microphone</span><span class="val-name" id="mic-status">Not Tested</span></div>
+    </div>
+  </div>
+
+  <!-- ======================== SYSTEM INFO ======================== -->
+  <div id="section-sysinfo" class="section">
+    <div class="section-title"><div class="icon">💻</div>System Information</div>
+
+    <div class="info-grid" id="sysinfo-grid"></div>
+  </div>
+
+  <!-- ======================== ROADMAP ======================== -->
+  <div id="section-roadmap" class="section">
+    <div class="section-title"><div class="icon">🗺</div>Development Roadmap</div>
+
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 1 — COMPLETED ✅</div>
+        <h3>Core Display Tests</h3>
+        <p>Full-screen solid color tests (R, G, B, W, Black, Yellow, Cyan, Magenta, Orange, Gray), gradient test bars, dead pixel pattern overlays, and checkerboard patterns.</p>
+        <ul>
+          <li>10 solid color fullscreen modes</li>
+          <li>RGB gradient test</li>
+          <li>Dead pixel checkerboard & dot grid patterns</li>
+          <li>ESC / click to exit fullscreen</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 2 — COMPLETED ✅</div>
+        <h3>Keyboard Testing Module</h3>
+        <p>Interactive keyboard layout with real-time key detection. Every key press is highlighted and tracked. Type test area for free-form typing test.</p>
+        <ul>
+          <li>Full QWERTY keyboard visual map</li>
+          <li>Real-time key highlight on press</li>
+          <li>Key press counter & progress tracker</li>
+          <li>All-keys-tested detection badge</li>
+          <li>Free-form type test textarea</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 3 — COMPLETED ✅</div>
+        <h3>Touchpad & Mouse Testing</h3>
+        <p>Visual touchpad test area with cursor tracking, click detection (left/right/middle), scroll event counting, and movement statistics.</p>
+        <ul>
+          <li>Mouse move tracking with dot trail</li>
+          <li>Left, right, middle click detection</li>
+          <li>Scroll event counter</li>
+          <li>Real-time movement coordinates</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 4 — COMPLETED ✅</div>
+        <h3>Touch Screen Testing</h3>
+        <p>Multi-touch canvas with finger dot visualization, max-finger count tracking, touch log, and touch support detection.</p>
+        <ul>
+          <li>Multi-touch visualization (up to 10 fingers)</li>
+          <li>Max simultaneous touch counter</li>
+          <li>Touch event log</li>
+          <li>Touch API support detection</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 5 — COMPLETED ✅</div>
+        <h3>Audio Testing</h3>
+        <p>Web Audio API powered speaker test for left/right/both channels, frequency sweep slider (20Hz–20kHz), volume control, and microphone level meter.</p>
+        <ul>
+          <li>Left / Right / Stereo speaker test</li>
+          <li>Frequency sweep 20Hz–20kHz</li>
+          <li>Volume level control</li>
+          <li>Microphone level visualizer</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 6 — COMPLETED ✅</div>
+        <h3>Battery & Camera/Mic</h3>
+        <p>Battery API integration for level, charging status, discharge/charge time. WebRTC camera preview and microphone access test.</p>
+        <ul>
+          <li>Battery level with visual indicator</li>
+          <li>Charging/discharging status</li>
+          <li>Camera preview (front/back)</li>
+          <li>Camera & mic device count</li>
+        </ul>
+      </div>
+
+      <div class="rm-item">
+        <div class="rm-phase">PHASE 7 — FUTURE 🚀</div>
+        <h3>Planned Enhancements</h3>
+        <p>Upcoming features and improvements planned for future versions.</p>
+        <ul>
+          <li>Screen brightness & refresh rate detection</li>
+          <li>Wi-Fi & Bluetooth connectivity test</li>
+          <li>USB port test (drag & drop file)</li>
+          <li>GPU/WebGL performance benchmark</li>
+          <li>Network speed test (ping, upload, download)</li>
+          <li>Accelerometer / gyroscope sensor test</li>
+          <li>Downloadable PDF test report</li>
+          <li>Keyboard shortcut recognition test</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="status-dot"></span>
+  All tests run locally in your browser — no data is uploaded anywhere.<br>
+  <div style="margin-top:0.5rem;">Developed with ❤️ by <strong>Vidyanand</strong> &nbsp;|&nbsp; LaptopTest Pro v1.0</div>
+</footer>
+
+<script>
+// ============================================================
+//  NAVIGATION
+// ============================================================
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+  document.getElementById('section-' + id).classList.add('active');
+  event.target.classList.add('active');
+
+  if (id === 'sysinfo') loadSysInfo();
+  if (id === 'battery') loadBattery();
+  if (id === 'touchscreen') {
+    document.getElementById('ts-supported').textContent =
+      ('ontouchstart' in window || navigator.maxTouchPoints > 0) ? '✅ YES' : '❌ NO';
+  }
+}
+
+// ============================================================
+//  FULLSCREEN DISPLAY
+// ============================================================
+const overlay = document.getElementById('fullscreen-overlay');
+
+const COLOR_LIST = [
+  { color: '#ff0000', label: 'RED' },
+  { color: '#00ff00', label: 'GREEN' },
+  { color: '#0000ff', label: 'BLUE' },
+  { color: '#ffffff', label: 'WHITE' },
+  { color: '#000000', label: 'BLACK' },
+  { color: '#ffff00', label: 'YELLOW' },
+  { color: '#ff00ff', label: 'MAGENTA' },
+  { color: '#00ffff', label: 'CYAN' },
+  { color: '#808080', label: 'GRAY' },
+  { color: '#ff8800', label: 'ORANGE' },
+];
+
+let currentColorIndex = 0;
+
+function applyColor(index) {
+  const c = COLOR_LIST[index];
+  overlay.style.cssText = `background:${c.color};`;
+  document.getElementById('fs-color-name').textContent = c.label;
+  document.getElementById('fs-counter').textContent = (index + 1) + ' / ' + COLOR_LIST.length;
+}
+
+function fullscreenColor(color, label) {
+  currentColorIndex = COLOR_LIST.findIndex(c => c.color === color);
+  if(currentColorIndex < 0) currentColorIndex = 0;
+  applyColor(currentColorIndex);
+  overlay.classList.add('active');
+}
+
+function changeColor(dir) {
+  currentColorIndex = (currentColorIndex + dir + COLOR_LIST.length) % COLOR_LIST.length;
+  applyColor(currentColorIndex);
+}
+
+function exitFullscreen() {
+  overlay.classList.remove('active');
+  overlay.style.cssText = '';
+}
+
+let hideTimer = null;
+
+function showControls() {
+  const ctrl = document.getElementById('fs-controls');
+  ctrl.style.opacity = '1';
+  ctrl.style.pointerEvents = 'auto';
+  clearTimeout(hideTimer);
+  hideTimer = setTimeout(() => {
+    ctrl.style.opacity = '0';
+    ctrl.style.pointerEvents = 'none';
+  }, 3000);
+}
+
+// Mouse move = show controls temporarily
+overlay.addEventListener('mousemove', (e) => {
+  if (overlay.classList.contains('active')) showControls();
+});
+
+// Touch = show controls temporarily
+overlay.addEventListener('touchstart', (e) => {
+  if (overlay.classList.contains('active')) showControls();
+}, { passive: true });
+
+// Click on overlay background (not buttons) = next color
+overlay.addEventListener('click', (e) => {
+  if (e.target === overlay) changeColor(1);
+});
+
+function fullscreenPattern(type) {
+  overlay.classList.add('active');
+  document.getElementById('fs-color-name').textContent = type.toUpperCase();
+  document.getElementById('fs-counter').textContent = 'Pattern';
+  if (type === 'checkerboard') {
+    overlay.style.cssText = 'background:#000;';
+    let size = 40, cols = Math.ceil(window.innerWidth/size), rows = Math.ceil(window.innerHeight/size);
+    let s = `<div id="pattern-inner" style="position:fixed;inset:0;display:grid;grid-template-columns:repeat(${cols},${size}px);">`;
+    for(let i=0;i<cols*rows;i++){let r=Math.floor(i/cols),c=i%cols;s+=`<div style="width:${size}px;height:${size}px;background:${(r+c)%2===0?'#fff':'#000'}"></div>`;}
+    s+='</div>';
+    overlay.insertAdjacentHTML('afterbegin', s);
+  } else if (type === 'dots') {
+    overlay.style.cssText = 'background:#000;background-image:radial-gradient(circle, white 1px, transparent 1px);background-size:20px 20px;';
+  } else if (type === 'vlines') {
+    overlay.style.cssText = 'background:repeating-linear-gradient(to right,#0f0 0px,#0f0 1px,#000 1px,#000 6px);';
+  } else if (type === 'hlines') {
+    overlay.style.cssText = 'background:repeating-linear-gradient(to bottom,#f00 0px,#f00 1px,#000 1px,#000 6px);';
+  } else if (type === 'checker2') {
+    overlay.style.cssText = 'background:#000;background-image:repeating-conic-gradient(#fff 0% 25%,#000 0% 50%);background-size:10px 10px;';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (!overlay.classList.contains('active')) return;
+  if (e.key === 'Escape') exitFullscreen();
+  if (e.key === 'ArrowRight') changeColor(1);
+  if (e.key === 'ArrowLeft') changeColor(-1);
+});
+
+// ============================================================
+//  KEYBOARD
+// ============================================================
+const ROWS = [
+  ['Escape','F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'],
+  ['`','1','2','3','4','5','6','7','8','9','0','-','=','Backspace'],
+  ['Tab','q','w','e','r','t','y','u','i','o','p','[',']','\\'],
+  ['CapsLock','a','s','d','f','g','h','j','k','l',';',"'",'Enter'],
+  ['ShiftLeft','z','x','c','v','b','n','m',',','.','/', 'ShiftRight'],
+  ['ControlLeft','Meta','AltLeft',' ','AltRight','ControlRight','ArrowLeft','ArrowUp','ArrowDown','ArrowRight']
+];
+
+const WIDE = { 'Backspace':2, 'Tab':1.7, '\\':1.7, 'CapsLock':2, 'Enter':2, 'ShiftLeft':2.5, 'ShiftRight':2.5, 'ControlLeft':1.7, 'ControlRight':1.7, 'Meta':1.5, 'AltLeft':1.5, 'AltRight':1.5, ' ':7 };
+const LABELS = { ' ':'SPACE', 'Meta':'WIN/CMD', 'Escape':'ESC', 'Backspace':'⌫', 'Enter':'⏎', 'ShiftLeft':'⇧ SHIFT', 'ShiftRight':'SHIFT ⇧', 'ControlLeft':'CTRL', 'ControlRight':'CTRL', 'AltLeft':'ALT', 'AltRight':'ALT', 'CapsLock':'CAPS', 'ArrowLeft':'←', 'ArrowRight':'→', 'ArrowUp':'↑', 'ArrowDown':'↓', 'Tab':'TAB', '\\':'\\' };
+
+let testedKeys = new Set();
+let pressCount = 0;
+const allKeys = new Set(ROWS.flat());
+
+function buildKeyboard() {
+  const kb = document.getElementById('keyboard-layout');
+  kb.innerHTML = '';
+  ROWS.forEach(row => {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'kb-row';
+    row.forEach(k => {
+      const el = document.createElement('div');
+      el.className = 'key';
+      const w = WIDE[k] || 1;
+      if(w >= 7) el.classList.add('spacebar');
+      else if(w >= 2.5) el.classList.add('wide5');
+      else if(w >= 2) el.classList.add('wide4');
+      else if(w >= 1.7) el.classList.add('wide3');
+      else if(w >= 1.5) el.classList.add('wide2');
+      el.textContent = LABELS[k] || k.toUpperCase();
+      el.dataset.key = k;
+      el.id = 'key-' + k.replace(/[^a-zA-Z0-9]/g, 'X') + '_' + Math.random().toString(36).slice(2,5);
+      rowEl.appendChild(el);
+    });
+    kb.appendChild(rowEl);
+  });
+  document.getElementById('kb-total-count').textContent = allKeys.size;
+}
+
+function getKeyEl(code, key) {
+  let k = code.replace('Key','').toLowerCase();
+  if (code.startsWith('Digit')) k = code.replace('Digit','');
+  if (code === 'Space') k = ' ';
+  if (['ShiftLeft','ShiftRight','ControlLeft','ControlRight','AltLeft','AltRight'].includes(code)) k = code;
+  if (['Backspace','Tab','CapsLock','Enter','Escape'].includes(code)) k = code;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(code)) k = code;
+  if (['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'].includes(code)) k = code;
+  if (code === 'MetaLeft' || code === 'MetaRight') k = 'Meta';
+  if (code === 'Minus') k = '-';
+  if (code === 'Equal') k = '=';
+  if (code === 'BracketLeft') k = '[';
+  if (code === 'BracketRight') k = ']';
+  if (code === 'Semicolon') k = ';';
+  if (code === 'Quote') k = "'";
+  if (code === 'Comma') k = ',';
+  if (code === 'Period') k = '.';
+  if (code === 'Slash') k = '/';
+  if (code === 'Backslash') k = '\\';
+  if (code === 'Backquote') k = '`';
+  return { el: document.querySelector(`[data-key="${k}"]`), k };
+}
+
+document.addEventListener('keydown', e => {
+  const active = document.getElementById('section-keyboard');
+  if (!active.classList.contains('active') && document.getElementById('type-test') !== document.activeElement) return;
+
+  pressCount++;
+  document.getElementById('kb-press-count').textContent = pressCount;
+
+  const { el, k } = getKeyEl(e.code, e.key);
+  if (el) {
+    el.classList.add('pressed', 'tested');
+    testedKeys.add(k);
+    document.getElementById('kb-tested-count').textContent = testedKeys.size;
+    if(testedKeys.size >= allKeys.size) document.getElementById('kb-all-badge').style.display='';
+  }
+
+  const disp = document.getElementById('last-key-display');
+  disp.innerHTML = `<span class="lk-label">Last:</span><span class="lk-key">${e.key === ' ' ? 'SPACE' : e.key.toUpperCase()}</span><span class="lk-code">code: ${e.code}</span><span class="lk-code">keyCode: ${e.keyCode}</span>`;
+
+  setTimeout(() => { if(el) el.classList.remove('pressed'); }, 180);
+});
+
+function resetKeyboard() {
+  testedKeys.clear(); pressCount = 0;
+  document.getElementById('kb-tested-count').textContent = 0;
+  document.getElementById('kb-press-count').textContent = 0;
+  document.getElementById('kb-all-badge').style.display = 'none';
+  document.querySelectorAll('.key').forEach(k => k.classList.remove('pressed','tested'));
+  document.getElementById('last-key-display').innerHTML = '<span class="lk-label">Press any key...</span>';
+}
+
+function typeTestFocus() {
+  document.getElementById('type-test').focus();
+}
+
+buildKeyboard();
+
+// ============================================================
+//  TOUCHPAD
+// ============================================================
+let tpMoves=0, tpClicks=0, tpScroll=0;
+let lc=0, rc=0, mc=0;
+const tpArea = document.getElementById('touchpad-area');
+
+tpArea.addEventListener('mousemove', e => {
+  tpMoves++;
+  document.getElementById('tp-moves').textContent = tpMoves;
+  document.getElementById('tp-hint').style.display = 'none';
+  // dot
+  let dot = tpArea.querySelector('.touch-dot');
+  if(!dot){ dot = document.createElement('div'); dot.className='touch-dot'; tpArea.appendChild(dot); }
+  const rect = tpArea.getBoundingClientRect();
+  dot.style.left = (e.clientX - rect.left) + 'px';
+  dot.style.top = (e.clientY - rect.top) + 'px';
+  // trail
+  const trail = document.createElement('div');
+  trail.className = 'touch-trail';
+  trail.style.left = (e.clientX - rect.left) + 'px';
+  trail.style.top = (e.clientY - rect.top) + 'px';
+  tpArea.appendChild(trail);
+  setTimeout(() => trail.remove(), 600);
+});
+
+tpArea.addEventListener('click', e => {
+  tpClicks++; lc++;
+  document.getElementById('tp-clicks').textContent = tpClicks;
+  document.getElementById('btn-left').textContent = '✅';
+  document.getElementById('btn-left-count').textContent = lc + ' times';
+  tpArea.classList.add('active-touch');
+  setTimeout(() => tpArea.classList.remove('active-touch'), 200);
+});
+
+tpArea.addEventListener('contextmenu', e => {
+  e.preventDefault(); tpClicks++; rc++;
+  document.getElementById('tp-clicks').textContent = tpClicks;
+  document.getElementById('btn-right').textContent = '✅';
+  document.getElementById('btn-right-count').textContent = rc + ' times';
+});
+
+tpArea.addEventListener('mousedown', e => {
+  if(e.button === 1) { mc++; document.getElementById('btn-middle').textContent = '✅'; document.getElementById('btn-middle-count').textContent = mc + ' times'; }
+});
+
+tpArea.addEventListener('wheel', e => {
+  tpScroll++;
+  document.getElementById('tp-scroll').textContent = tpScroll;
+});
+
+function resetTouchpad() {
+  tpMoves=0; tpClicks=0; tpScroll=0; lc=0; rc=0; mc=0;
+  ['tp-moves','tp-clicks','tp-scroll'].forEach(id => document.getElementById(id).textContent = 0);
+  ['btn-left','btn-right','btn-middle'].forEach(id => document.getElementById(id).textContent = '⭕');
+  ['btn-left-count','btn-right-count','btn-middle-count'].forEach(id => document.getElementById(id).textContent = '0 times');
+  tpArea.querySelectorAll('.touch-dot,.touch-trail').forEach(e => e.remove());
+  document.getElementById('tp-hint').style.display = '';
+}
+
+// ============================================================
+//  TOUCH SCREEN
+// ============================================================
+let tsTouches=0, tsMaxFingers=0;
+const tsArea = document.getElementById('touch-area');
+
+tsArea.addEventListener('touchstart', e => {
+  e.preventDefault();
+  document.getElementById('ts-hint').style.display = 'none';
+  tsTouches += e.changedTouches.length;
+  document.getElementById('ts-touches').textContent = tsTouches;
+  if(e.touches.length > tsMaxFingers) { tsMaxFingers = e.touches.length; document.getElementById('ts-max-fingers').textContent = tsMaxFingers; }
+  const rect = tsArea.getBoundingClientRect();
+  Array.from(e.changedTouches).forEach((t,i) => {
+    const dot = document.createElement('div');
+    dot.className = 'multi-touch-dot';
+    dot.id = 'tdot-' + t.identifier;
+    dot.textContent = t.identifier + 1;
+    dot.style.left = (t.clientX - rect.left) + 'px';
+    dot.style.top = (t.clientY - rect.top) + 'px';
+    tsArea.appendChild(dot);
+  });
+  const log = document.getElementById('ts-log');
+  log.innerHTML += `<div>[+] ${e.changedTouches.length} finger(s) — Total active: ${e.touches.length}</div>`;
+  log.scrollTop = log.scrollHeight;
+}, { passive: false });
+
+tsArea.addEventListener('touchmove', e => {
+  e.preventDefault();
+  const rect = tsArea.getBoundingClientRect();
+  Array.from(e.changedTouches).forEach(t => {
+    const dot = document.getElementById('tdot-' + t.identifier);
+    if(dot) { dot.style.left = (t.clientX - rect.left) + 'px'; dot.style.top = (t.clientY - rect.top) + 'px'; }
+  });
+}, { passive: false });
+
+tsArea.addEventListener('touchend', e => {
+  Array.from(e.changedTouches).forEach(t => {
+    const dot = document.getElementById('tdot-' + t.identifier);
+    if(dot) dot.remove();
+  });
+  const log = document.getElementById('ts-log');
+  log.innerHTML += `<div>[-] ${e.changedTouches.length} finger(s) lifted</div>`;
+  log.scrollTop = log.scrollHeight;
+});
+
+function resetTouchScreen() {
+  tsTouches=0; tsMaxFingers=0;
+  document.getElementById('ts-touches').textContent = 0;
+  document.getElementById('ts-max-fingers').textContent = 0;
+  document.getElementById('ts-log').innerHTML = '';
+  tsArea.querySelectorAll('.multi-touch-dot').forEach(e => e.remove());
+  document.getElementById('ts-hint').style.display = '';
+}
+
+// ============================================================
+//  AUDIO
+// ============================================================
+let audioCtx = null;
+let masterGain = null;
+let micStream = null;
+
+function getAudioCtx() {
+  if(!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0.5;
+    masterGain.connect(audioCtx.destination);
+  }
+  return audioCtx;
+}
+
+function playTone(channel, freq) {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const panner = ctx.createStereoPanner();
+  osc.frequency.value = freq;
+  osc.type = 'sine';
+  gain.gain.value = 0.4;
+  if(channel === 'left') panner.pan.value = -1;
+  else if(channel === 'right') panner.pan.value = 1;
+  else panner.pan.value = 0;
+  osc.connect(gain); gain.connect(panner); panner.connect(masterGain);
+  osc.start();
+  gain.gain.setValueAtTime(0.4, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.5);
+  osc.stop(ctx.currentTime + 1.5);
+}
+
+function updateFreq(v) { document.getElementById('freq-display').textContent = v + ' Hz'; }
+function updateVol(v) {
+  document.getElementById('vol-display').textContent = v + '%';
+  if(masterGain) masterGain.gain.value = v / 100;
+}
+
+async function startMic() {
+  try {
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const ctx = getAudioCtx();
+    const src = ctx.createMediaStreamSource(micStream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    src.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    function update() {
+      analyser.getByteFrequencyData(data);
+      const avg = data.reduce((a,b)=>a+b,0)/data.length;
+      document.getElementById('mic-bar').style.width = Math.min(avg*2,100) + '%';
+      requestAnimationFrame(update);
+    }
+    update();
+  } catch(e) { alert('Microphone access denied or unavailable.'); }
+}
+
+// ============================================================
+//  BATTERY
+// ============================================================
+async function loadBattery() {
+  if('getBattery' in navigator) {
+    const bat = await navigator.getBattery();
+    const update = () => {
+      const pct = Math.round(bat.level * 100);
+      document.getElementById('battery-pct').textContent = pct + '%';
+      document.getElementById('battery-fill').style.width = pct + '%';
+      document.getElementById('battery-fill').style.background = pct > 20 ? 'var(--accent)' : 'var(--accent2)';
+      document.getElementById('battery-detail').textContent = bat.charging ? '⚡ Charging' : '🔋 On Battery';
+      document.getElementById('bat-level').textContent = pct + '%';
+      document.getElementById('bat-status').textContent = pct > 80 ? '🟢 Good' : pct > 20 ? '🟡 Medium' : '🔴 Low';
+      document.getElementById('bat-charging').textContent = bat.charging ? '✅ Yes' : '❌ No';
+      document.getElementById('bat-discharge').textContent = bat.dischargingTime === Infinity ? 'N/A (Charging)' : Math.round(bat.dischargingTime/60) + ' min';
+      document.getElementById('bat-chargetime').textContent = bat.chargingTime === Infinity ? 'N/A (Full/Discharging)' : Math.round(bat.chargingTime/60) + ' min';
+    };
+    update();
+    bat.addEventListener('levelchange', update);
+    bat.addEventListener('chargingchange', update);
+  } else {
+    document.getElementById('battery-pct').textContent = 'N/A';
+    document.getElementById('battery-detail').textContent = 'Battery API not supported in this browser.';
+  }
+}
+
+// ============================================================
+//  CAMERA
+// ============================================================
+let camStream = null;
+
+async function startCamera() {
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const vid = document.getElementById('camera-feed');
+    vid.srcObject = camStream;
+    document.getElementById('cam-overlay').style.display = 'none';
+    document.getElementById('cam-status').textContent = '✅ Active';
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const cams = devices.filter(d => d.kind === 'videoinput');
+    const mics = devices.filter(d => d.kind === 'audioinput');
+    document.getElementById('cam-devices').textContent = cams.length + ' camera(s)';
+    document.getElementById('mic-status').textContent = mics.length + ' mic(s) found';
+  } catch(e) {
+    document.getElementById('cam-status').textContent = '❌ ' + e.message;
+  }
+}
+
+function stopCamera() {
+  if(camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+  const vid = document.getElementById('camera-feed');
+  vid.srcObject = null;
+  document.getElementById('cam-overlay').style.display = 'flex';
+  document.getElementById('cam-status').textContent = 'Stopped';
+}
+
+// ============================================================
+//  SYSTEM INFO
+// ============================================================
+function loadSysInfo() {
+  const nav = navigator;
+  const sc = window.screen;
+  const conn = nav.connection || nav.mozConnection || nav.webkitConnection || {};
+
+  const sections = [
+    {
+      title: '🖥 Display',
+      rows: [
+        ['Screen Resolution', sc.width + ' × ' + sc.height],
+        ['Available Size', sc.availWidth + ' × ' + sc.availHeight],
+        ['Color Depth', sc.colorDepth + ' bit'],
+        ['Pixel Depth', sc.pixelDepth + ' bit'],
+        ['Device Pixel Ratio', window.devicePixelRatio + 'x'],
+        ['Orientation', sc.orientation ? sc.orientation.type : 'N/A'],
+      ]
+    },
+    {
+      title: '💻 Browser & OS',
+      rows: [
+        ['Browser', nav.userAgent.split(' ').slice(-2).join(' ')],
+        ['Platform', nav.platform],
+        ['Language', nav.language],
+        ['Languages', (nav.languages||[]).join(', ')],
+        ['Online', nav.onLine ? '✅ Yes' : '❌ No'],
+        ['Cookies Enabled', nav.cookieEnabled ? '✅ Yes' : '❌ No'],
+        ['Do Not Track', nav.doNotTrack || 'Not set'],
+      ]
+    },
+    {
+      title: '🖱 Input',
+      rows: [
+        ['Touch Points', nav.maxTouchPoints + ' max'],
+        ['Touch Support', ('ontouchstart' in window) ? '✅ Yes' : '❌ No'],
+        ['Pointer Events', window.PointerEvent ? '✅ Yes' : '❌ No'],
+        ['Gamepad API', 'getGamepads' in nav ? '✅ Yes' : '❌ No'],
+      ]
+    },
+    {
+      title: '🌐 Network',
+      rows: [
+        ['Connection Type', conn.effectiveType || conn.type || 'N/A'],
+        ['Downlink', conn.downlink ? conn.downlink + ' Mbps' : 'N/A'],
+        ['RTT', conn.rtt ? conn.rtt + ' ms' : 'N/A'],
+        ['Save Data', conn.saveData ? 'On' : 'Off'],
+      ]
+    },
+    {
+      title: '🧠 Hardware',
+      rows: [
+        ['CPU Cores', nav.hardwareConcurrency + ' logical cores'],
+        ['Device Memory', nav.deviceMemory ? nav.deviceMemory + ' GB (approx)' : 'N/A'],
+        ['WebGL', (() => { try { const c=document.createElement('canvas'); return c.getContext('webgl') ? '✅ Supported' : '❌ No'; } catch(e){return '❌ No';} })()],
+        ['WebGL2', (() => { try { const c=document.createElement('canvas'); return c.getContext('webgl2') ? '✅ Supported' : '❌ No'; } catch(e){return '❌ No';} })()],
+        ['Web Workers', typeof Worker !== 'undefined' ? '✅ Yes' : '❌ No'],
+        ['Service Worker', 'serviceWorker' in nav ? '✅ Yes' : '❌ No'],
+      ]
+    },
+    {
+      title: '🔑 APIs',
+      rows: [
+        ['Battery API', 'getBattery' in nav ? '✅ Yes' : '❌ No'],
+        ['Geolocation', 'geolocation' in nav ? '✅ Yes' : '❌ No'],
+        ['Notifications', 'Notification' in window ? '✅ Yes' : '❌ No'],
+        ['Speech', 'speechSynthesis' in window ? '✅ Yes' : '❌ No'],
+        ['Clipboard', 'clipboard' in nav ? '✅ Yes' : '❌ No'],
+        ['Share API', 'share' in nav ? '✅ Yes' : '❌ No'],
+      ]
+    }
+  ];
+
+  const grid = document.getElementById('sysinfo-grid');
+  grid.innerHTML = sections.map(s => `
+    <div class="info-card">
+      <h3>${s.title}</h3>
+      ${s.rows.map(r => `<div class="info-row"><span class="key-name">${r[0]}</span><span class="val-name">${r[1]}</span></div>`).join('')}
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
